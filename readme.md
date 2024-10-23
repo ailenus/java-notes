@@ -39,8 +39,8 @@
   - [Maps](#maps)
   - [Queues](#queues)
   - [`Comparable` and `Comparator` Interfaces](#comparable-and-comparator-interfaces)
-    - [`Comparable`](#comparable-interface)
-    - [`Comparator`](#comparator-interface)
+    - [`Comparable` Interface](#comparable-interface)
+    - [`Comparator` Interface](#comparator-interface)
   - [`equals` and `hashCode` Methods](#equals-and-hashcode-methods)
     - [`equals` Method](#equals-method)
     - [`hashCode` Method](#hashcode-method)
@@ -127,23 +127,23 @@
 
 ### Polymorphism
 
-- polymorphism applies to **base** type
-  - `List<Integer> l = new ArrayList<Integer>(); // works`
-- polymorphism does **not** apply to generic type
-  - `List<Number> l = new ArrayList<Integer>(); // doesn't work`
+- polymorphism applies to *base* type
+  - `List<Integer> l = new ArrayList<Integer>();` works
+- polymorphism does *not* apply to generic type
+  - `List<Number> l = new ArrayList<Integer>();` doesn’t work
 
 ### Wildcards
 
-| Type | Syntax | Example | Add Items? |
-| --- | --- | --- | --- |
-| unbound | `?` | `List<?> l = new ArrayList<Integer>();` | no |
-| upper bound | `? extends T` | `List<? extends Number> l = new ArrayList<Integer>();` | no |
-| lower bound | `? super T` | `List<? super Number> l = new Arraylist<Object>();` | yes |
+| Type        | Syntax        | Example                                                | Add Items? |
+|-------------|---------------|--------------------------------------------------------|------------|
+| unbound     | `?`           | `List<?> l = new ArrayList<Integer>();`                | no         |
+| upper bound | `? extends T` | `List<? extends Number> l = new ArrayList<Integer>();` | no         |
+| lower bound | `? super T`   | `List<? super Number> l = new Arraylist<Object>();`    | yes        |
 
 ### Generic Methods
 
 - formal type parameter declared *immediately before* return type
-    - return type may also include generics
+  - return type may also include generics
 
 ```java
 class NonGenericClass {
@@ -153,31 +153,33 @@ class NonGenericClass {
 }
 ```
 
-- optionally specify the type when invoking generic methods
-    - `NonGenericClass.<String>genericMethod1("string");`
+- optionally specify type when invoking generic methods
+  - `NonGenericClass.<String>genericMethod1("string");`
 
 ## Lambda Expressions
 
 ### Interfaces
 
-- interfaces can have *static* and *default* methods
-    - classes NOT required to implement *static* or *default* methods
-    - *default* methods are inheritable but *static* methods are NOT
-- top-level interfaces can have *public* or *package-private* access
+- interfaces may have *static* and *default* methods
+  - classes *not* required to implement static or default methods
+  - default methods inheritable
+  - static methods *not* inheritable
+- top-level interfaces may have *public* or *package-private* access
 
 ### Functional Interfaces
 
 - SAM — Single Abstract Method
-    - *default* and *static* methods don’t count
-    - methods from `Object` don’t count
+  - *default* and *static* methods don’t count
+  - methods from `Object` don’t count
 
 ### Lambdas
 
-- a lambda is an instance of a functional interface
+- an instance of a functional interface
 
 ```java
 @FunctionalInterface
 interface I { void m(); }
+
 public class C {
     public static void main(String[] args) {
         // method 1
@@ -186,9 +188,11 @@ public class C {
             public void m() { System.out.println("non-lambda"); }
         };
         nonLambda.m();
+        
         // method 2
         I lambda1 = () -> { System.out.println("lambda 1"); };
         lambda1.m();
+        
         // method 3
         I lambda2 = () -> System.out.println("lambda 2");
         lambda2.m();
@@ -196,40 +200,46 @@ public class C {
 }
 ```
 
-| Functional Interface | Method | Note |
-| --- | --- | --- |
-| `Predicate<T>` | `boolean test(T t)` |  |
-| `BiPredicate<T, U>` | `boolean test(T t, U u)` |  |
-| `Supplier<T>` | `T get()` |  |
-| `Consumer<T>` | `void accept(T t)` |  |
-| `BiConsumer<T, U>` | `void accept(T t, U u)` |  |
-| `Function<T, R>` | `R apply(T t)` |  |
-| `BiFunction<T, U, R>` | `R apply(T t, U u)` |  |
-| `UnaryOperator<T>` | `T apply(T t)` | `UnaryOperator<T> extends Function<T, T>` |
-| `BinaryOperator<T>` | `T apply(T t1, T t2)` | `BinaryOperator<T> extends BiFunction<T, T, T>`  |
-- local variables referenced from a lambda MUST be *final* or *effectively final*
-    - changing a local variable used in a lambda (whether the change is inside or outside the lambda) is a compile error
+| Functional Interface  | Method                   | Note                                            |
+|-----------------------|--------------------------|-------------------------------------------------|
+| `Predicate<T>`        | `boolean test(T t)`      |                                                 |
+| `BiPredicate<T, U>`   | `boolean test(T t, U u)` |                                                 |
+| `Supplier<T>`         | `T get()`                |                                                 |
+| `Consumer<T>`         | `void accept(T t)`       |                                                 |
+| `BiConsumer<T, U>`    | `void accept(T t, U u)`  |                                                 |
+| `Function<T, R>`      | `R apply(T t)`           |                                                 |
+| `BiFunction<T, U, R>` | `R apply(T t, U u)`      |                                                 |
+| `UnaryOperator<T>`    | `T apply(T t)`           | `UnaryOperator<T> extends Function<T, T>`       |
+| `BinaryOperator<T>`   | `T apply(T t1, T t2)`    | `BinaryOperator<T> extends BiFunction<T, T, T>` |
+
+- local variables referenced from lambda *must* be *final* or *effectively final*
+  - changing local variable used in lambda (whether inside or outside lambda) is compile error
 
 ### Method References
 
-- four types
-    - bound (instance known at compile-time), unbound (instance provided at runtime), static (considered UNBOUND), constructor
+- 4 types
+  - bound (instance known at compile-time)
+  - unbound (instance provided at runtime)
+  - static (considered *unbound*)
+  - constructor
 
 ```java
 // bound
-var v = "string";
-Supplier<String> l1 = () -> v.toLowerCase();
-Supplier<String> m1 = v::toLowerCase;
-Predicate<String> l2 = (t) -> v.startsWith(t);
-Predicate<String> m2 = v::startsWith;
+Supplier<String> l1 = () -> s.toLowerCase();
+Supplier<String> m1 = s::toLowerCase;
+Predicate<String> l2 = (t) -> s.startsWith(t);
+Predicate<String> m2 = s::startsWith;
+
 // unbound
 Function<String, String> l3 = s -> s.toLowerCase();
 Function<String, String> m3 = String::toLowerCase;
 BiPredicate<String, String> l4 = (s, t) -> s.startsWith(t);
 BiPredicate<String, String> m4 = String::startsWith;
+
 // static
 Consumer<List<Integer>> l5 = l -> Collections.sort(l);
 Consumer<List<Integer>> m5 = Collections::sort;
+
 // constructor
 Supplier<StringBuilder> l6 = () -> new StringBuilder();
 Supplier<StringBuilder> m6 = StringBuilder::new;
@@ -240,19 +250,19 @@ Function<Integer, List<String>> m7 = ArrayList::new;
 ## Streams
 
 - `interface Stream<T>`
-- a stream is a sequence of data that can be processed with operations
-    - a stream is NOT a data structure
+- sequence of data to be processed with operations
+  - *not* data structure
 
 ### Optionals
 
 - `class Optional<T>`
-- for primitive types `OptionalInt`, `OptionalLong`, and `OptionalDouble`
+- for primitive types — `OptionalInt`, `OptionalLong`, and `OptionalDouble`
 
 #### Creating Optionals
 
 - `static <T> Optional<T> empty()`
 - `static <T> Optional<T> of(T value)`
-    - throws `NullPointerException` if `value` is null
+  - throws `NullPointerException` if `value` is null
 - `static <T> Optional<T> ofNullable(T value)`
 
 #### Optional Methods
@@ -260,24 +270,23 @@ Function<Integer, List<String>> m7 = ArrayList::new;
 - `boolean isEmpty()`
 - `boolean isPresent()`
 - `T get()`
-    - throws `NoSuchElementException` if empty
-    - for primitive types `int getAsInt()`, `long getAsLong()`, and `double getAsDouble()`
+  - throws `NoSuchElementException` if empty
+  - for primitive types — `int getAsInt()`, `long getAsLong()`, and `double getAsDouble()`
 - `void ifPresent(Consumer<? super T> action)`
-    - does nothing if empty
+  - does nothing if empty
 - `void ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction)`
-    - performs `emptyAction` if empty
+  - performs `emptyAction` if empty
 - `T orElse(T other)`
-    - returns `other` if empty
+  - returns `other` if empty
 - `T orElseGet(Supplier<? extends T> supplier)`
-    - returns `supplier` result if empty
+  - returns `supplier` result if empty
 
 ### Stream Pipelines
 
-- a stream pipeline consists of operations that run on a stream to produce a result
-- three parts
-    - source, intermediate operations, terminal operation
-    - terminal operation required to start the process (lazy evaluation)
-    - a stream can only be used once, no longer usable after a terminal operation
+- consists of operations that run on stream to produce result
+- 3 parts — source, intermediate operations, and terminal operation
+  - terminal operation required to start the process (lazy evaluation)
+  - each stream only used once, no longer usable after terminal operation
 
 ### Creating Streams
 
@@ -290,51 +299,52 @@ Function<Integer, List<String>> m7 = ArrayList::new;
 
 - static generic method `Stream.generate()`
 - static generic method `Stream.iterate()`
-- can be turned into finite streams with intermediate operations like `limit()`
+- may be turned into finite streams with intermediate operations such as `limit()`
 
 ### Terminal Operations
 
-- *reductions* are a special type of terminal operation where ALL contents of the stream are combined into a single primitive or object
+- *reductions* are special type of terminal operation where *all* contents of stream are combined into single primitive
+or object
 
-| Method | Return Type | Reduction? |
-| --- | --- | --- |
-| `count()` | `long` | yes |
-| `min(Comparator)`, `max(Comparator)` | `Optional<T>` | yes |
-| `findAny()`, `findFirst()` | `Optional<T>` | no, may not process all contents |
-| `allMatch(Predicate)`, `anyMatch(Predicate)`, `noneMatch(Predicate)` | `boolean` | no, may not process all contents |
-| `forEach(Consumer)` | `void` | no, doesn’t return anything |
-| `reduce`, `collect` | varies | yes |
+| Method                                                               | Return Type   | Reduction?                       |
+|----------------------------------------------------------------------|---------------|----------------------------------|
+| `count()`                                                            | `long`        | yes                              |
+| `min(Comparator)`, `max(Comparator)`                                 | `Optional<T>` | yes                              |
+| `findAny()`, `findFirst()`                                           | `Optional<T>` | no, may not process all contents |
+| `allMatch(Predicate)`, `anyMatch(Predicate)`, `noneMatch(Predicate)` | `boolean`     | no, may not process all contents |
+| `forEach(Consumer)`                                                  | `void`        | no, doesn’t return anything      |
+| `reduce`, `collect`                                                  | varies        | yes                              |
 
 #### `reduce` Methods
 
 - `T reduce(T identity, BinaryOperator<T> accumulator)`
 
 ```java
-String s = Stream.of("a", "b", "c").reduce("", (s1, s2) -> s1 + s2); // "abc"
-Integer i = Stream.of(1, 2, 3).reduce(1, (i1, i2) -> i1 * i2); // 6
+String s = Stream.of("a", "b", "c").reduce("", (s1, s2) -> s1 + s2);    // "abc"
+Integer i = Stream.of(1, 2, 3).reduce(1, (i1, i2) -> i1 * i2);          // 6
 ```
 
 - `Optional<T> reduce(BinaryOperator<T> accumulator)`
-    - empty stream → empty Optional returned
-    - one element in stream → sole element returned
-    - multiple elements in stream → accumulator applied and result returned
+  - empty stream → empty optional returned
+  - one element in stream → sole element returned
+  - multiple elements in stream → accumulator applied and result returned
 
 ```java
 BinaryOperator<Integer> op = (i1, i2) -> i1 + i2;
 Stream<Integer> empty = Stream.empty();
 Stream<Integer> oneEl = Stream.of(0);
 Stream<integer> mulEl = Stream.of(1, 2, 3);
-empty.reduce(op).ifPresent(System.out::print); // nothing printed
-oneEl.reduce(op).ifPresent(System.out::print); // 0 printed
-mulEl.reduce(op).ifPresent(System.out::print); // 6 printed
+empty.reduce(op).ifPresent(System.out::print);  // nothing printed
+oneEl.reduce(op).ifPresent(System.out::print);  // 0 printed
+mulEl.reduce(op).ifPresent(System.out::print);  // 6 printed
 ```
 
 - `<U> U reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator<U> combiner)`
-    - creates intermediate reductions with accumulator and then combine reductions in the end with combiner
-    - useful for parallel streams when streams can be decomposed and reassembled by separate threads
+  - creates intermediate reductions with accumulator and then combine reductions in the end with combiner
+  - useful for parallel streams when streams can be decomposed and reassembled by separate threads
 
 ```java
-int len = Stream.of("a", "bc", "def", "ghij") // 10
+int len = Stream.of("a", "bc", "def", "ghij")   // 10
         .reduce(0,
                 (i, s) -> i + s.length(),
                 (i1, i2) -> i1 + i2);
@@ -348,98 +358,98 @@ int len = Stream.of("a", "bc", "def", "ghij") // 10
 #### `collect` Methods
 
 - special type of reduction — *mutable reduction*
-    - more efficient than regular reduction
+  - more efficient than regular reduction
 - `<R> R collect(Supplier<R> supplier, BiConsumer<R, ? super T> accumulator, BiConsumer<R, R> combiner)`
-    - accumulator adds an element to the collection, then combiner merges two collections
-    - useful for parallel processing
+  - accumulator adds element to collection, then combiner merges two collections
+  - useful for parallel processing
 
 ```java
-StringBuilder word = Stream.of("ad", "jud", "i", "cate") // "adjudicate"
-        .collect(() -> new StringBuilder(),      // StringBuilder::new
-                 (sb, s) -> sb.append(s),        // StringBuilder::append
-                 (sb1, sb2) -> sb1.append(sb2)); // StringBuilder::append
+StringBuilder word = Stream.of("ad", "jud", "i", "cate")    // "adjudicate"
+        .collect(() -> new StringBuilder(),         // StringBuilder::new
+                 (sb, s) -> sb.append(s),           // StringBuilder::append
+                 (sb1, sb2) -> sb1.append(sb2));    // StringBuilder::append
 ```
 
 - `<R, A> R collect(Collector<? super T, A, R> collector)`
 
 ```java
-String str = Stream.of("a", "bc", "def") // "a, bc, def"
+String str = Stream.of("a", "bc", "def")    // "a, bc, def"
         .collect(Collectors.joining(", "));
-Double avg = Stream.of("a", "bc", "def") // 2.0
+Double avg = Stream.of("a", "bc", "def")    // 2.0
         .collect(Collectors.averagingInt(s -> s.length())); // String::length
 ```
 
 #### `Collectors.toMap` Methods
 
 - two functions required
-    - first function, key mapper, tells the collector how to create keys
-    - second function, value mapper, tells the collector how to create values
+  - 1st function, key mapper, tells collector how to create keys
+  - 2nd function, value mapper, tells collector how to create values
 
 ```java
-Map<String, Integer> m = Stream.of("a", "b", "c") // {a=1, b=1, c=1}
+Map<String, Integer> m = Stream.of("a", "b", "c")   // {a=1, b=1, c=1}
         .collect(Collectors.toMap(s -> s,
-                                  s -> s.length())); // String::length
+                                  s -> s.length()));    // String::length
 ```
 
-- third function, merge function, also required if mapped keys repeat
+- 3rd function, merge function, also required if mapped keys repeat
 
 ```java
-Map<Integer, String> m = Stream.of("a", "b", "cd") // {1=a,b, 2=cd}
-        .collect(Collectors.toMap(s -> s.length(), // String::length
+Map<Integer, String> m = Stream.of("a", "b", "cd")  // {1=a,b, 2=cd}
+        .collect(Collectors.toMap(s -> s.length(),  // String::length
                                   s -> s,
                                   (s1, s2) -> s1 + "," + s2));
 ```
 
-- fourth function, map factory, also required if specific map implementation desired
+- 4th function, map factory, also required if specific map implementation desired
 
 ```java
-TreeMap<String, Integer> m = Stream.of("a", "b", "a") // {a=2, b=1}
+TreeMap<String, Integer> m = Stream.of("a", "b", "a")   // {a=2, b=1}
         .collect(Collectors.toMap(s -> s,
-                                  s -> s.length(),             // String::length
-                                  (len1, len2) -> len1 + len2, // Integer::sum
-                                  () -> new TreeMap<>()));     // TreeMap::new
+                                  s -> s.length(),              // String::length
+                                  (len1, len2) -> len1 + len2,  // Integer::sum
+                                  () -> new TreeMap<>()));      // TreeMap::new
 ```
 
 #### `Collectors.groupingBy` Methods
 
-- requires a function, classifier, and collects into a map
-    - classifier determines map keys
-    - map values are lists of all entries that match the key
+- requires one function, classifier, and collects into map
+  - classifier determines map keys
+  - map values are lists of all entries that match key
 
 ```java
-Map<Integer, List<String>> m = Stream.of("a", "b", "cd") // {1=[a, b], 2=[cd]}
-        .collect(Collectors.groupingBy(s -> s.length())); // String::length
+Map<Integer, List<String>> m = Stream.of("a", "b", "cd")    // {1=[a, b], 2=[cd]}
+        .collect(Collectors.groupingBy(s -> s.length()));   // String::length
 ```
 
-- optionally takes a downstream collector, processing map values
+- optionally takes downstream collector, processing map *values*
 
 ```java
-Map<Integer, Set<String>> m = Stream.of("a", "b", "cd", "a") // {1=[a, b], 2=[cd]}
+Map<Integer, Set<String>> m = Stream.of("a", "b", "cd", "a")    // {1=[a, b], 2=[cd]}
         .collect(Collectors.groupingBy(s -> s.length(), // String::length
                                        Collectors.toSet()));
 ```
 
-- optionally takes a map factory supplier, guaranteeing returned map type
+- optionally takes map factory supplier, guaranteeing returned map type
 
 ```java
-TreeMap<Integer, List<String>> m = Stream.of("a", "b", "cd") // {1=[a, b], 2=[cd]}
-        .collect(Collectors.groupingBy(s -> s.length(),       // String::length
-                                       () -> new TreeMap<>(), // TreeMap::new
+TreeMap<Integer, List<String>> m = Stream.of("a", "b", "cd")    // {1=[a, b], 2=[cd]}
+        .collect(Collectors.groupingBy(s -> s.length(),         // String::length
+                                       () -> new TreeMap<>(),   // TreeMap::new
                                        Collectors.toList()));
 ```
 
 #### `Collectors.partitioningBy` Methods
 
 - special case of grouping with two groups
-    - requires a predicate
-    - map keys are *true* and *false*
+  - requires predicate
+  - map keys are *true* and *false*
 
 ```java
-Map<Boolean, List<String>> m = Stream.of("a", "b", "ac") // {false=[b], true=[a, ac]}
+Map<Boolean, List<String>> m = Stream.of("a", "b", "ac")    // {false=[b], true=[a, ac]}
         .collect(Collectors.partitioningBy(s -> s.startsWith("a")));
 ```
 
-- optionally takes a downstream collector
+- optionally takes downstream collector
 
 ```java
 Map<Boolean, Set<String>> m = Stream.of("a", "bc", "a") // {false=[a], true=[bc]}
@@ -450,42 +460,42 @@ Map<Boolean, Set<String>> m = Stream.of("a", "bc", "a") // {false=[a], true=[bc]
 ### Intermediate Operations
 
 - `filter` method
-    - `Stream<T> filter(Predicate<? super T> predicate)`
+  - `Stream<T> filter(Predicate<? super T> predicate)`
 - `distinct` method
-    - `Stream<T> distinct()`
-    - stateful
+  - `Stream<T> distinct()`
+  - stateful
 - `limit` method
-    - `Stream<T> limit(long maxSize)`
-    - stateful and short-circuiting
+  - `Stream<T> limit(long maxSize)`
+  - stateful and short-circuiting
 - `map` method
-    - `<R> Stream<R> map(Function<? super T, ? extends R> mapper)`
+  - `<R> Stream<R> map(Function<? super T, ? extends R> mapper)`
 
 ```java
 Stream.of("a", "bc", "def")
-        .map(s -> s.length()) // String::length
-        .forEach(System.out::print); // 123 printed
+        .map(s -> s.length())   // String::length
+        .forEach(System.out::print);    // 123 printed
 ```
 
 - `flatMap` method
-    - `<R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper)`
+  - `<R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper)`
 
 ```java
 List<String> l1 = Arrays.asList("a", "b");
 List<String> l2 = Arrays.asList("c", "d");
 Stream.of(l1, l2)
-        .flatMap(l -> l.stream()) // Collection::stream
-        .forEach(System.out::print); // abcd printed
+        .flatMap(l -> l.stream())   // Collection::stream
+        .forEach(System.out::print);    // abcd printed
 ```
 
 - `sorted` methods
-    - `Stream<T> sorted()`
-    - `Stream<T> sorted(Comparator<? super T> comparator)`
-    - stateful and needs to process all contents up to this operation before sorting
+  - `Stream<T> sorted()`
+  - `Stream<T> sorted(Comparator<? super T> comparator)`
+  - stateful and needs to process all contents up to this operation before sorting
 
 ```java
 Stream.of("abc", "d", "ef")
-        .sorted(Comparator.comparing(s -> s.length())) // String::length
-        .forEach(System.out::print); // defabc printed
+        .sorted(Comparator.comparing(s -> s.length()))  // String::length
+        .forEach(System.out::print);    // defabc printed
 ```
 
 ### Primitive Streams
@@ -505,77 +515,79 @@ Stream.of("abc", "d", "ef")
 
 ```java
 Stream.of(1, 2, 3)
-        .reduce((i1, i2) -> i1 + i2) // Integer::sum
-        .ifPresent(System.out::println);         // 6 printed
-System.out.println(IntStream.of(1, 2, 3).sum()); // 6 printed
+        .reduce((i1, i2) -> i1 + i2)    // Integer::sum
+        .ifPresent(System.out::println);            // 6 printed
+System.out.println(IntStream.of(1, 2, 3).sum());    // 6 printed
 ```
 
-| Class | Method | Return Type |
-| --- | --- | --- |
-| `IntStream` | `average()` | `OptionalDouble` |
-| `LongStream` | `average()` | `OptionalDouble` |
-| `DoubleStream` | `average()` | `OptionalDouble` |
-| `IntStream` | `min()`, `max()` | `OptionalInt` |
-| `LongStream` | `min()`, `max()` | `OptionalLong` |
+| Class          | Method           | Return Type      |
+|----------------|------------------|------------------|
+| `IntStream`    | `average()`      | `OptionalDouble` |
+| `LongStream`   | `average()`      | `OptionalDouble` |
+| `DoubleStream` | `average()`      | `OptionalDouble` |
+| `IntStream`    | `min()`, `max()` | `OptionalInt`    |
+| `LongStream`   | `min()`, `max()` | `OptionalLong`   |
 | `DoubleStream` | `min()`, `max()` | `OptionalDouble` |
-| `IntStream` | `sum()` | `int` |
-| `LongStream` | `sum()` | `long` |
-| `DoubleStream` | `sum()` | `double` |
+| `IntStream`    | `sum()`          | `int`            |
+| `LongStream`   | `sum()`          | `long`           |
+| `DoubleStream` | `sum()`          | `double`         |
+
 - `summaryStatistics` methods
 
 ```java
 IntSummaryStatistics is1 = IntStream.of(1, 2, 3).summaryStatistics();
-System.out.println(is1.getMin());     // 1 printed
-System.out.println(is1.getMax());     // 3 printed
-System.out.println(is1.getAverage()); // 2.0 printed
-System.out.println(is1.getCount());   // 3 printed
-System.out.println(is1.getSum());     // 6 printed
+System.out.println(is1.getMin());       // 1 printed
+System.out.println(is1.getMax());       // 3 printed
+System.out.println(is1.getAverage());   // 2.0 printed
+System.out.println(is1.getCount());     // 3 printed
+System.out.println(is1.getSum());       // 6 printed
+
 IntSummaryStatistics is2 = IntStream.empty().summaryStatistics();
-System.out.println(is2.getMin());     // 2147483647 printed
-System.out.println(is2.getMax());     // -2147483648 printed
-System.out.println(is2.getAverage()); // 0.0 printed
-System.out.println(is2.getCount());   // 0 printed
-System.out.println(is2.getSum());     // 0 printed
+System.out.println(is2.getMin());       // 2147483647 printed
+System.out.println(is2.getMax());       // -2147483648 printed
+System.out.println(is2.getAverage());   // 0.0 printed
+System.out.println(is2.getCount());     // 0 printed
+System.out.println(is2.getSum());       // 0 printed
 ```
 
 #### Primitive Functional Interfaces
 
-| Functional Interface | Method |
-| --- | --- |
-| `IntSupplier` | `int getAsInt()` |
-| `LongSupplier` | `long getAsLong()` |
-| `DoubleSupplier` | `double getAsDouble()` |
-| `IntConsumer` | `void accept(int)` |
-| `LongConsumer` | `void accept(long)` |
-| `DoubleConsumer` | `void accept(double)` |
-| `IntPredicate` | `boolean test(int)` |
-| `LongPredicate` | `boolean test(long)` |
-| `DoublePredicate` | `boolean test(double)` |
-| `IntFunction<R>` | `R apply(int)` |
-| `LongFunction<R>` | `R apply(long)` |
-| `DoubleFunction<R>` | `R apply(double)` |
-| `IntUnaryOperator` | `int applyAsInt(int)` |
-| `LongUnaryOperator` | `long applyAsLong(long)` |
-| `DoubleUnaryOperator` | `double applyAsDouble(double)` |
-| `IntBinaryOperator` | `int applyAsInt(int, int)` |
-| `LongBinaryOperator` | `long applyAsLong(long, long)` |
-| `DoubleBinaryOperator` | `double applyAsDouble(double, double)`  |
+| Functional Interface   | Method                                 |
+|------------------------|----------------------------------------|
+| `IntSupplier`          | `int getAsInt()`                       |
+| `LongSupplier`         | `long getAsLong()`                     |
+| `DoubleSupplier`       | `double getAsDouble()`                 |
+| `IntConsumer`          | `void accept(int)`                     |
+| `LongConsumer`         | `void accept(long)`                    |
+| `DoubleConsumer`       | `void accept(double)`                  |
+| `IntPredicate`         | `boolean test(int)`                    |
+| `LongPredicate`        | `boolean test(long)`                   |
+| `DoublePredicate`      | `boolean test(double)`                 |
+| `IntFunction<R>`       | `R apply(int)`                         |
+| `LongFunction<R>`      | `R apply(long)`                        |
+| `DoubleFunction<R>`    | `R apply(double)`                      |
+| `IntUnaryOperator`     | `int applyAsInt(int)`                  |
+| `LongUnaryOperator`    | `long applyAsLong(long)`               |
+| `DoubleUnaryOperator`  | `double applyAsDouble(double)`         |
+| `IntBinaryOperator`    | `int applyAsInt(int, int)`             |
+| `LongBinaryOperator`   | `long applyAsLong(long, long)`         |
+| `DoubleBinaryOperator` | `double applyAsDouble(double, double)` |
 
 #### Primitive Mapping Streams
 
-|  | To `Stream<T>` | To `IntStream` | To `LongStream` | To `DoubleStream` |
-| --- | --- | --- | --- | --- |
-| From `Stream<T>` | `map(Function)` | `mapToInt(ToIntFunction)` | `mapToLong(ToLongFunction)` | `mapToDouble(ToDoubleFunction)` |
-| From `IntStream` | `mapToObj(IntFunction)` | `map(IntUnaryOperator)` | `mapToLong(IntToLongFunction)` | `mapToDouble(IntToDoubleFunction)` |
-| From `LongStream` | `mapToObj(LongFunction)` | `mapToInt(LongToIntFunction)` | `map(LongUnaryOperator)` | `mapToDouble(LongToDoubleFunction)` |
-| From `DoubleStream` | `mapToObj(DoubleFUnction)` | `mapToInt(DoubleToIntFunction)` | `mapToLong(DoubleToLongFunction)` | `map(DoubleUnaryOperator)` |
+|                     | To `Stream<T>`             | To `IntStream`                  | To `LongStream`                   | To `DoubleStream`                   |
+|---------------------|----------------------------|---------------------------------|-----------------------------------|-------------------------------------|
+| From `Stream<T>`    | `map(Function)`            | `mapToInt(ToIntFunction)`       | `mapToLong(ToLongFunction)`       | `mapToDouble(ToDoubleFunction)`     |
+| From `IntStream`    | `mapToObj(IntFunction)`    | `map(IntUnaryOperator)`         | `mapToLong(IntToLongFunction)`    | `mapToDouble(IntToDoubleFunction)`  |
+| From `LongStream`   | `mapToObj(LongFunction)`   | `mapToInt(LongToIntFunction)`   | `map(LongUnaryOperator)`          | `mapToDouble(LongToDoubleFunction)` |
+| From `DoubleStream` | `mapToObj(DoubleFUnction)` | `mapToInt(DoubleToIntFunction)` | `mapToLong(DoubleToLongFunction)` | `map(DoubleUnaryOperator)`          |
 
 ### Parallel Streams
 
 - stream pipelines execute either sequentially or in parallel
-- property of the stream
-- default method `Collection.stream()` creates a sequential stream
-- default method `Collection.parallelStream()` creates a parallel stream
+- property of stream
+- default method `Collection.stream()` creates sequential stream
+- default method `Collection.parallelStream()` creates parallel stream
 - modifiable by instance method `BaseStream.sequential()` and `BaseStream.parallel()`
 - may be queried by instance method `BaseStream.isParallel`
 
@@ -830,7 +842,7 @@ public class LambdaRunnable {
     public static void main(String[] args) {
         Thread t = new Thread(() -> System.out.println("run(): "
                 + Thread.currentThread().getName()));
-        t.run(); // doesn't create a thread; using t.start() to create it
+        t.run(); // doesn’t create a thread; using t.start() to create it
     }
 } // prints run(): main
 ```
@@ -1183,7 +1195,7 @@ try {
 Lock lock = new ReentrantLock();
 if (lock.tryLock()) {  // non-blocking call, returns immediately
     try {
-        // don't call lock()
+        // don’t call lock()
         // critical section
     } finally {
         lock.unlock(); // return lock
@@ -1489,7 +1501,7 @@ name=Some Mill
 Locale gb = new Locale("en", "GB");
 ResourceBundle rb = ResourceBundle.getBundle("Mill", gb);
 /* search path:
-1a. Mill_en_GB.java - doesn't exist
+1a. Mill_en_GB.java - doesn’t exist
 1b. Mill_en_GB.properties - found, hierarchy now determined
 2.  Hierarchy is now
     - Mill_en_GB.properties
@@ -1775,7 +1787,7 @@ p3 = Paths.get("/", "dir", "file.txt");
 
 // methods
 p2.toString();     // C:\dir\file.txt
-p2.getNameCount(); // 2 (root doesn't count)
+p2.getNameCount(); // 2 (root doesn’t count)
 p2.getName(0);     // dir
 p2.getFileName();  // file.txt
 p2.getParent();    // C:\dir
@@ -1935,7 +1947,7 @@ class Book extends InfoMedium implements Serializable { // serialisable
 }
 /* when de-serialising a Book object,
 its medium will be set to "unknown" as InfoMedium constructor is called
-while author will be retained as Book constructor isn't called */
+while author will be retained as Book constructor isn’t called */
 ```
 
 #### Custom Serialisation
@@ -2465,7 +2477,7 @@ void method() {
     int k = 2;
     class Local {
         int add() {
-            return i + j + k; // compile error (k isn't final or effectively final)
+            return i + j + k; // compile error (k isn’t final or effectively final)
         }
     }
     k = 3;
