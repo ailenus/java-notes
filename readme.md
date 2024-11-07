@@ -256,7 +256,10 @@ Function<Integer, List<String>> m7 = ArrayList::new;
 ### Optionals
 
 - `class Optional<T>`
-- for primitive types — `OptionalInt`, `OptionalLong`, and `OptionalDouble`
+- for primitive types
+  - `OptionalInt`
+  - `OptionalLong`
+  - `OptionalDouble`
 
 #### Creating Optionals
 
@@ -271,7 +274,10 @@ Function<Integer, List<String>> m7 = ArrayList::new;
 - `boolean isPresent()`
 - `T get()`
   - throws `NoSuchElementException` if empty
-  - for primitive types — `int getAsInt()`, `long getAsLong()`, and `double getAsDouble()`
+  - for primitive types
+    - `int getAsInt()`
+    - `long getAsLong()`
+    - `double getAsDouble()`
 - `void ifPresent(Consumer<? super T> action)`
   - does nothing if empty
 - `void ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction)`
@@ -284,9 +290,12 @@ Function<Integer, List<String>> m7 = ArrayList::new;
 ### Stream Pipelines
 
 - consists of operations that run on stream to produce result
-- 3 parts — source, intermediate operations, and terminal operation
-  - terminal operation required to start the process (lazy evaluation)
-  - each stream only used once, no longer usable after terminal operation
+- 3 parts
+  - source
+  - intermediate operations
+  - terminal operation
+- terminal operation required to start the process (lazy evaluation)
+- each stream only used once, no longer usable after terminal operation
 
 ### Creating Streams
 
@@ -303,8 +312,8 @@ Function<Integer, List<String>> m7 = ArrayList::new;
 
 ### Terminal Operations
 
-- *reductions* are special type of terminal operation where *all* contents of stream are combined into single primitive
-or object
+- *reduction* is special type of terminal operation where *all* contents of stream are combined into single primitive or
+object
 
 | Method                                                               | Return Type   | Reduction?                       |
 |----------------------------------------------------------------------|---------------|----------------------------------|
@@ -333,21 +342,18 @@ Integer i = Stream.of(1, 2, 3).reduce(1, (i1, i2) -> i1 * i2);          // 6
 BinaryOperator<Integer> op = (i1, i2) -> i1 + i2;
 Stream<Integer> empty = Stream.empty();
 Stream<Integer> oneEl = Stream.of(0);
-Stream<integer> mulEl = Stream.of(1, 2, 3);
+Stream<Integer> mulEl = Stream.of(1, 2, 3);
 empty.reduce(op).ifPresent(System.out::print);  // nothing printed
 oneEl.reduce(op).ifPresent(System.out::print);  // 0 printed
 mulEl.reduce(op).ifPresent(System.out::print);  // 6 printed
 ```
 
 - `<U> U reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator<U> combiner)`
-  - creates intermediate reductions with accumulator and then combine reductions in the end with combiner
+  - creates intermediate reductions with accumulator and then combine reductions with combiner
   - useful for parallel streams when streams can be decomposed and reassembled by separate threads
 
 ```java
-int len = Stream.of("a", "bc", "def", "ghij")   // 10
-        .reduce(0,
-                (i, s) -> i + s.length(),
-                (i1, i2) -> i1 + i2);
+int len = Stream.of("a", "bc", "def", "ghij").reduce(0, (i, s) -> i + s.length(), (i1, i2) -> i1 + i2); // 10
 ```
 
 #### Collectors
@@ -589,7 +595,7 @@ System.out.println(is2.getSum());       // 0 printed
 - default method `Collection.stream()` creates sequential stream
 - default method `Collection.parallelStream()` creates parallel stream
 - modifiable by instance method `BaseStream.sequential()` and `BaseStream.parallel()`
-- may be queried by instance method `BaseStream.isParallel`
+- may be queried by instance method `BaseStream.isParallel()`
 
 ```java
 Stream.of("a", "b", "c").forEach(System.out::print);            // abc printed
@@ -598,25 +604,18 @@ Stream.of("a", "b", "c").parallel().forEach(System.out::print); // bca printed
 
 ## Collections
 
-- `interface Collection<E>`
+`interface Collection<E>`
 
 ```mermaid
 graph BT
-    style Collection fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style Set fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style List fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style Queue fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style SortedSet fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style NavigableSet fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style Deque fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style HashSet fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style LinkedHashSet fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style TreeSet fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style ArrayList fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style LinkedList fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style Stack fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style ArrayDeque fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style PriorityQueue fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
+    style HashSet fill:green
+    style LinkedHashSet fill:green
+    style TreeSet fill:green
+    style ArrayList fill:green
+    style LinkedList fill:green
+    style Stack fill:green
+    style ArrayDeque fill:green
+    style PriorityQueue fill:green
     Set --> Collection
     List --> Collection
     Queue --> Collection
@@ -636,13 +635,10 @@ graph BT
 
 ```mermaid
 graph BT
-    style Map fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style SortedMap fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style NavigableMap fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style TreeMap fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style HashMap fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style LinkedHashMap fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style Hashtable fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
+    style TreeMap fill:green
+    style HashMap fill:green
+    style LinkedHashMap fill:green
+    style Hashtable fill:green
     SortedMap --> Map
     NavigableMap --> SortedMap
     TreeMap -.-> NavigableMap
@@ -651,30 +647,32 @@ graph BT
     Hashtable -.-> Map
 ```
 
-| Method | Return Type | Note |
-| --- | --- | --- |
-| `add(E)` | `boolean` |  |
-| `remove(Object)` | `boolean` |  |
-| `isEmpty()` | `boolean` |  |
-| `size()` | `int` |  |
-| `clear()` | `void` |  |
-| `contains(Object)` | `boolean` |  |
-| `removeIf(Predicate)` | `boolean` | default |
-| `forEach(Consumer)` | `void` | default inherited from `Iterable`  |
+| Method                | Return Type | Note                              |
+|-----------------------|-------------|-----------------------------------|
+| `add(E)`              | `boolean`   |                                   |
+| `remove(Object)`      | `boolean`   |                                   |
+| `isEmpty()`           | `boolean`   |                                   |
+| `size()`              | `int`       |                                   |
+| `clear()`             | `void`      |                                   |
+| `contains(Object)`    | `boolean`   |                                   |
+| `removeIf(Predicate)` | `boolean`   | default                           |
+| `forEach(Consumer)`   | `void`      | default inherited from `Iterable` |
 
 ### Lists
 
-- `Arrays.asList` links the array and list together, where changes to array goes to the list and vice versa
-    - cannot add or delete but can replace
-- `List.of` and `List.copyOf` both return immutable lists
+- `Arrays.asList` links array and list, where changes to array reflects in list and vice versa
+  - cannot add or delete but can replace
+- `List.of` and `List.copyOf` both return *immutable* lists
 
 #### Stacks
 
-- `push`, `peek`, and `pop`
+- class
+- `push`, `peek`, and `pop` methods
+- deprecated, use `Deque` interface instead
 
 #### Linked Lists
 
-- `addFirst`, `addLast`, `removeFirst`, and `removeLast`
+- `addFirst`, `addLast`, `removeFirst`, and `removeLast` methods
 
 ### Sets
 
@@ -682,63 +680,64 @@ graph BT
 
 - `HashSet` has no order, efficiency depends on `hashCode` implementation
 - `LinkedHashSet` is ordered by insertion, elements doubly linked
-- `TreeSet` can be ordered naturally or custom ordered by comparator at creation time
-- `Set.of` and `Set.copyOf` both return immutable sets
+- `TreeSet` can be ordered naturally or custom ordered by comparator at instantiation
+- `Set.of` and `Set.copyOf` both return *immutable* sets
 
 ### Maps
 
 - `HashMap` is unsorted and unordered, efficiency depends on `hashCode` implementation
-    - allows one null key and multiple null values
+  - allows one null key and multiple null values
 - `LinkedHashMap` maintains insertion order
 - `TreeMap` is sorted naturally by keys or custom sorted by comparator
-- `Hashtable` is thread-safe and slower version of `HashMap` and nulls are not allowed
-    
-    
-    | Method | Return Type | Note |
-    | --- | --- | --- |
-    | `clear()` | `void` | removes all keys and values |
-    | `containsKey(Object)` | `boolean` |  |
-    | `containsValue(Object)` | `boolean` |  |
-    | `entrySet()` | `Set<Map.Entry<K, V>>` | return a `Set` view of the pairs |
-    | `forEach(BiConsumer)` | `void` |  |
-    | `get(Object)` | `V` |  |
-    | `isEmpty()` | `boolean` |  |
-    | `keySet()` | `Set<K>` | return a `Set` view of the keys |
-    | `put(K, V)` | `V` | add or replace; return previous or null |
-    | `putIfAbsent(K, V)` | `V` | add and return null if absent; else existing |
-    | `remove(Object)` | `V` | return previous or null |
-    | `replace(K, V)` | `V` | return previous or null |
-    | `replaceAll(BiFunction)` | `void` | replace value |
-    | `size()` | `int` |  |
-    | `values()` | `Collection<V>` | return a `Collection` view of the values |
+- `Hashtable` is thread-safe and slower version of `HashMap` and nulls prohibited
+
+| Method                   | Return Type            | Note                                                |
+|--------------------------|------------------------|-----------------------------------------------------|
+| `clear()`                | `void`                 | removes all keys and values                         |
+| `containsKey(Object)`    | `boolean`              |                                                     |
+| `containsValue(Object)`  | `boolean`              |                                                     |
+| `entrySet()`             | `Set<Map.Entry<K, V>>` | return `Set` view of entries                        |
+| `forEach(BiConsumer)`    | `void`                 |                                                     |
+| `get(Object)`            | `V`                    |                                                     |
+| `isEmpty()`              | `boolean`              |                                                     |
+| `keySet()`               | `Set<K>`               | return `Set` view of keys                           |
+| `put(K, V)`              | `V`                    | add or replace; return previous or null             |
+| `putIfAbsent(K, V)`      | `V`                    | add and return null if absent; else return existing |
+| `remove(Object)`         | `V`                    | return previous or null                             |
+| `replace(K, V)`          | `V`                    | return previous or null                             |
+| `replaceAll(BiFunction)` | `void`                 | replace values                                      |
+| `size()`                 | `int`                  |                                                     |
+| `values()`               | `Collection<V>`        | return `Collection` view of values                  |
 
 ### Queues
 
 - first-in first-out
-    - except priority queues, where order is natural or by comparator
+  - except priority queues
 - `PriorityQueue` is priority-in priority-out, sort by natural order or by comparator
-    - first sorted elements accessed first
+  - first sorted elements accessed first
 - `Deque` is double ended
-    - `ArrayDeque` is expandable-array implementation, faster than `Stack` when used as a stack and faster than `LinkedList` when used as a queue
+  - `ArrayDeque` is expandable-array implementation, faster than `Stack` when used as stack and faster than `LinkedList`
+when used as queue
 
-|  | Throws Exception | Returns Special Value |
-| --- | --- | --- |
-| Examine | `element` | `peek` |
-| Insert | `add` | `offer` |
-| Remove | `remove` | `poll` |
+|         | Throws Exception | Returns Special Value |
+|---------|------------------|-----------------------|
+| Examine | `element`        | `peek`                |
+| Insert  | `add`            | `offer`               |
+| Remove  | `remove`         | `poll`                |
 
-`Deque` have methods with `First` and `Last` suffixes to the above methods, except `element` is replaced by `get`
+`Deque` have methods with `First` and `Last` suffixes to the above methods, with `element` replaced by `get`
 
-- when using `Deque` as a queue, examine first, insert last, and remove first
-    - `peekFirst` for queue peek, `offerLast` for queue offer, and `pollFirst` for queue poll
+- when using `Deque` as queue, examine first, insert last, and remove first
+  - `peekFirst` for queue peek, `offerLast` for queue offer, and `pollFirst` for queue poll
 - when using `Deque` as a stack, examine, insert, and remove first
-    - `addFirst` for stack push, `removeFirst` for stack pop, and `getFirst` for stack peek
+  - `addFirst` for stack push, `removeFirst` for stack pop, and `getFirst` for stack peek
 
 ### `Comparable` and `Comparator` Interfaces
 
-- both are generic functional interfaces
-- for example, if adding object from a class that doesn’t implement `Comparable` to a `TreeSet`, a `ClassCastException` is thrown
-- for example, instantiating a `TreeSet` of a class that doesn’t implement `Comparable` also throws a `ClassCastException`; must specify a `Comparator` in constructor in this case
+- both generic functional interfaces
+- for example, adding object from class that doesn’t implement `Comparable` to `TreeSet` throws `ClassCastException`
+- for example, instantiating `TreeSet` of class that doesn’t implement `Comparable` also throws `ClassCastException`
+  - must specify `Comparator` in constructor
 
 #### `Comparable` Interface
 
@@ -747,37 +746,41 @@ graph BT
 - in package `java.lang`
 - `int compareTo(T)`
 - natural order is: numbers < uppercase letters < lowercase letters in ascending order
-- `compareTo == 0` and `equals` should have the same value
+- `compareTo == 0` and `equals` should have same behaviour
 
 #### `Comparator` Interface
 
 `interface Comparator<T>`
 
 - in package `java.util`
-- used for when class of objects to be sorted don’t implement `Comparable`
 - `int compare(T, T)`
-- `binarySearch` requires a sorted `List`, optionally takes a `Comparator`
-- static method for getting a comparator `static <T, U extends Comparable<? super U>> Comparator<T> comparing(Function<? super T, ? extends U>)`
-- default method for reversing comparator order `default Comparator<T> reversed()`
-- default method for combining another comparator `default Comparator<T> thenComparing(Comparator<? super T>)`
+- used for when class of objects to be sorted don’t implement `Comparable`
+- `binarySearch` requires sorted `List`, optionally takes `Comparator`
+- static method for getting comparator
+  - `static <T, U extends Comparable<? super U>> Comparator<T> comparing(Function<? super T, ? extends U>)`
+- default method for reversing comparator order
+  - `default Comparator<T> reversed()`
+- default method for combining another comparator
+  - `default Comparator<T> thenComparing(Comparator<? super T>)`
 
 ### `equals` and `hashCode` Methods
 
 - both are public methods from `Object` and must be overridden together
-- if `equals` returns true, then `hashCode` must be the same
+- if `equals` returns true, then `hashCode` must be same
 
 #### `equals` Method
 
-- `Object.equals` checks references; equivalent to `==`
+- `Object.equals` checks references, equivalent to `==`
 - should override `public boolean equals(Object)`
-- `Object` passed in must be cast to the relevant type; use `instanceof` to do so safely
-- note that it must be `public` and take an `Object`
+- `Object` passed in must be cast to relevant type
+  - use `instanceof` to do so safely
+- must be `public` and take an `Object` parameter
 
 #### `hashCode` Method
 
-- not necessarily unique, but improves performance of `HashSet` etc.
+- not necessarily unique, but improves performance of `HashSet` et al.
 - should override `public int hashCode()`
-- when finding an object, first find the right bucket with `hashCode` and then search the bucket for the right element with `equals`
+- when finding object, first find bucket with `hashCode` and then search bucket for element with `equals`
 - do not use *transient* instance variables as they are not serialised
 - instance variables used in `equals` must be used in `hashCode`
 - careful about using mutable objects as keys in maps, as changing them changes their hash code
@@ -785,10 +788,11 @@ graph BT
 ## Concurrency
 
 - advantages: better performance, faster response time
-- disadvantages: shared resources must be handled carefully; data races, deadlock and livelock
+- disadvantages: shared resources must be handled carefully
+  - data races, deadlock, and livelock
 - *thread* is smallest unit of execution
 - *process* consists of one or more threads
-- *task* is the work a thread executes, often a lambda
+- *task* is work a thread executes, usually lambda
 - order of thread execution is *nondeterministic*
 
 ### Creating Threads
@@ -842,9 +846,9 @@ public class LambdaRunnable {
     public static void main(String[] args) {
         Thread t = new Thread(() -> System.out.println("run(): "
                 + Thread.currentThread().getName()));
-        t.run(); // doesn’t create a thread; using t.start() to create it
+        t.run();    // doesn’t create a thread; using t.start() creates one
     }
-} // prints run(): main
+}   // prints run(): main
 ```
 
 - implement `Callable`, which requires `ExecutorService`
@@ -886,8 +890,8 @@ class Counting implements Runnable {
         for (int i = 0; i < 3; i++) {
             try {
                 System.out.println(counts[i]);
-                Thread.sleep(1000);            // waits a second before each count
-            } catch (InterruptedException e) { // checked exception from sleep()
+                Thread.sleep(1000);             // waits a second before each count
+            } catch (InterruptedException e) {  // checked exception from sleep()
                 e.printStackTrace();
             }
         }
@@ -901,7 +905,7 @@ public class Main {
         System.out.println("end counting");
     }
 }
-/* prints with a delay between counts
+/* prints with delay between counts
 start counting
 end counting
 1
@@ -931,14 +935,14 @@ public class Main {
         System.out.println("start counting");
         t.start();
         try {
-            t.join();                      // main thread must wait here
-        } catch (InterruptedException e) { // checked exception from join()
+            t.join();                       // main thread must wait here
+        } catch (InterruptedException e) {  // checked exception from join()
             e.printStackTrace();
         }
         System.out.println("end counting");
     }
 }
-/* prints with a delay between counts
+/* prints with delay between counts
 start counting
 1
 2
@@ -951,20 +955,22 @@ end counting
 
 - services for creation and management of threads
 - static methods from `Executors` utility class return `ExecutorService` instances
-- a *thread pool* is a set of reusable worker threads available to execute tasks
-- three types
-    - single thread pool executor
-        - single thread used; tasks executed sequentially
-    - cached thread pool executor
-        - creates new threads as needed and reuse threads that have become free
-    - fixed thread pool executor
-        - creates a fixed number of threads specified at the start
+- *thread pool* is set of reusable worker threads available to execute tasks
+- 3 types
+  - single thread pool executor
+    - single thread used
+    - tasks executed sequentially
+  - cached thread pool executor
+    - creates new threads as needed 
+    - reuse threads that have become free
+  - fixed thread pool executor
+    - creates fixed number of threads specified
 
 ```java
-ExecutorService es = Executors.newSingleThreadExecutor();    // single
-ExecutorService es = Executors.newCachedThreadPool();        // cached
+ExecutorService es = Executors.newSingleThreadExecutor();       // single
+ExecutorService es = Executors.newCachedThreadPool();           // cached
 int cpuCount = Runtime.getRuntime().availableProcessors();
-ExecutorService es = Executors.newFixedThreadPool(cpuCount); // fixed
+ExecutorService es = Executors.newFixedThreadPool(cpuCount);    // fixed
 ```
 
 #### `Callable` Interface
@@ -973,32 +979,32 @@ ExecutorService es = Executors.newFixedThreadPool(cpuCount); // fixed
 
 - similar to `Runnable` except `Callable` can return a result and throw a checked exception
 
-|  | `Runnable` | `Callable<V>` |
-| --- | --- | --- |
-| Asynchronous? | Yes | Yes |
-| Represents a task? | Yes | Yes |
-| Functional interface? | Yes | Yes |
-| Functional Method | `void run()` | `V call() throws Exception` |
-| `ExecutorService` | `void execute(Runnable)`
-`Future<?> submit(Runnable)` | `<T> Future<T> submit(Callable<T>)` |
+|                           | `Runnable`                                                 | `Callable<V>`                       |
+|---------------------------|------------------------------------------------------------|-------------------------------------|
+| Asynchronous?             | Yes                                                        | Yes                                 |
+| Represents task?          | Yes                                                        | Yes                                 |
+| Functional interface?     | Yes                                                        | Yes                                 |
+| Functional Method         | `void run()`                                               | `V call() throws Exception`         |
+| `ExecutorService` Methods | `void execute(Runnable)` <br> `Future<?> submit(Runnable)` | `<T> Future<T> submit(Callable<T>)` |
 
 #### `Future` Interface
 
 `interface Future<V>`
 
 - used to obtain results from a `Callable`’s  `call` method.
-- methods provided to check if computation is complete (`isDone()`) and retrieve the result (`get()`)
+- `isDone()` checks if work is complete
+- `get()` retrieves result
 - result can only be retrieved when computation has completed, blocking if necessary
 
 ```java
 ExecutorService es = Executors.newSingleThreadExecutor();
-Future<Integer> future = es.submit(() -> 3 + 5); // V call()
+Future<Integer> future = es.submit(() -> 3 + 5);    // V call()
 try {
     System.out.println("The answer is: " + future.get(500, TimeUnit.MILLISECONDS));
 } catch (InterruptedException | ExecutionException | TimeoutException e) {
     e.printStackTrace();
 }
-es.shutdown(); // necessary or application never terminates
+es.shutdown();  // necessary or application never terminates
 /* prints
 The answer is: 8
 */
@@ -1006,34 +1012,36 @@ The answer is: 8
 
 #### `invokeAny` and `invokeAll` Methods
 
-- take a collection of `Callable`s
-- `invokeAny` executes synchronously and returns when one of the tasks has completed, all other tasks cancelled
-    - single thread executor always executes the first task
-    - nondeterministic when using thread pool
+- take collection of `Callable`
+- `invokeAny` executes synchronously and returns when any of tasks has completed, all other tasks cancelled
+  - single thread executor always executes the first task
+  - nondeterministic when using thread pool
 - `invokeAll` executes synchronously and returns when all tasks have completed, order is maintained
 
 ### Scheduling Tasks
 
 `interface ScheduledExecutorService`
 
-- single thread scheduled executor service `Executors.newSingleThreadScheduledExecutor()`
-- scheduled thread pool `Executors.newScheduledThreadPool()`
+- single thread scheduled executor service
+  - `Executors.newSingleThreadScheduledExecutor()`
+- scheduled thread pool
+  - `Executors.newScheduledThreadPool()`
 
-four methods for scheduling tasks
+4 methods for scheduling tasks
 
 - `ScheduledFuture<?> schedule(Runnable, long, TimeUnit)`
 - `<V> ScheduledFuture<V> schedule(Callable<V>, long, TimeUnit)`
 - `ScheduledFuture<?> scheduleAtFixedRate(Runnable, long, long, TimeUnit)`
-    - new tasks started after fixed time regardless of whether previous tasks finish
+  - new tasks started after fixed time regardless of whether previous tasks finish
 - `ScheduledFuture<?> scheduleWithFixedDelay(Runnable, long, long, TimeUnit)`
-    - new tasks started after fixed time only after previous task finished
+  - new tasks started after fixed time only after previous task finishes
 
 ```java
 ScheduledExectutorService ses = Executors.newScheduledThreadPool(10);
 System.out.println("start");
 Future<String> future = ses.schedule(() -> "a", 2, TimeUnit.SECONDS);
 try {
-    System.out.prinln(future.get()); // block
+    System.out.prinln(future.get());    // block
 } catch (InterruptedException | ExecutionException e) {
     e.printStackTrace();
 } finally {
@@ -1044,7 +1052,7 @@ System.out.println("end");
 start
 a
 end
-with a printed after a 2 second delay */
+with a printed after 2-second delay */
 ```
 
 ### Thread Safety
@@ -1072,19 +1080,23 @@ public class DataRace {
 #### Atomic Classes
 
 - atomic operation is indivisible
-- cannot guarantee that a thread will stay running throughout the atomic operation, but can guarantee that even if the thread moves in and out of the running state, no other thread can come in and act on the same data
-- `AtomicInteger`, `AtomicLong`, and `AtomicBoolean`
+- cannot guarantee thread will stay running throughout atomic operation, but can guarantee even if thread moves in and
+out of running state, no other thread can come in and act on same data
+- 3 classes
+  - `AtomicInteger`
+  - `AtomicLong`
+  - `AtomicBoolean`
 
-| Method | Note |
-| --- | --- |
-| `get` |  |
-| `set`  | assignment operator |
-| `getAndSet` | returns old value |
-| `compareAndSet` | sets value to new if current value equals expected |
-| `incrementAndGet` | pre-increment operator |
-| `getAndIncrement` | post-increment operator |
-| `decrementAndGet` | pre-decrement operator |
-| `getAndDecrement` | post-decrement operator |
+| Method            | Note                                               |
+|-------------------|----------------------------------------------------|
+| `get`             |                                                    |
+| `set`             | assignment operator                                |
+| `getAndSet`       | returns old value                                  |
+| `compareAndSet`   | sets value to new if current value equals expected |
+| `incrementAndGet` | pre-increment operator                             |
+| `getAndIncrement` | post-increment operator                            |
+| `decrementAndGet` | pre-decrement operator                             |
+| `getAndDecrement` | post-decrement operator                            |
 
 ```java
 public class AtomicIntegerExample {
@@ -1102,35 +1114,39 @@ public class AtomicIntegerExample {
 
 #### `synchronized` Keyword
 
-- atomic classes can’t guard a block of code
-- in operating systems, mutually exclusive code blocks (only one thread at a time can execute the code block) are *critical sections*, and *monitors* enable their implementation
-- every object in Java has a built-in monitor or *lock* that kicks in when used with `synchronized` code blocks
-- thread wishing to enter `synchronized` code block will try to acquire the lock; if lock is free thread will get lock
-    - any other thread now arriving will wait until first thread finishes critical section
-    - when first thread exits critical section, lock is released; then one waiting thread will obtain lock and enter critical section
-- note that threads must use same object
-    - if using different objects, then using different locks, and data race ensues
+- atomic classes can’t guard code block
+- in operating systems, mutually exclusive code blocks (only one thread can execute at any time) are *critical sections*
+- *monitors* enable their implementation
+- every object in Java has built-in monitor or *lock* that kicks in when used with `synchronized` code blocks
+- thread wishing to enter `synchronized` code block will try to acquire lock
+  - if lock is free, thread gets lock
+  - any other thread now arriving will wait until first thread finishes critical section
+  - when first thread exits critical section, lock is released
+  - waiting thread then obtains lock and enters critical section
+- threads must use same object
+  - if using different objects, then using different locks, and *data race* ensues
 - `synchronized` methods in addition to code blocks
 
 ```java
 class UseCounter {
     private int x;
     public void incrementA() {
-        synchronized(this) {                       // instance block locks on an object
+        synchronized(this) {                        // instance block locks on object
             x++;
         }
     }
-    public synchronized void incrementB() {        // instance method locks on this
+    public synchronized void incrementB() {         // instance method locks on this
         x++;
     }
     // incrementA() and incrementB() are equivalent
+  
     private static int y;
     public static void decrementA() {
-        synchronized(UseCounter.class) {           // static block locks on Class
+        synchronized(UseCounter.class) {            // static block locks on class
             y--;
         }
     }
-    public static synchronized void decrementB() { // static method locks on Class
+    public static synchronized void decrementB() {  // static method locks on class
         y--;
     }
     // decrementA() and decrementB() are equivalent
@@ -1140,12 +1156,12 @@ class UseCounter {
 ```java
 public class FixDataRaceWithSynchronized {
     private static int count = 0;
-    private static Object lock = new Object();
+    private static final Object lock = new Object();
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
             new Thread(FixDataRaceWithSynchronized::addToCounterFix1).start();
-            // new Thread(FixDataRaceWithSynchronized::addToCounterFix2).start();
-            // new Thread(FixDataRaceWithSynchronized::addToCounterFix3).start();
+//            new Thread(FixDataRaceWithSynchronized::addToCounterFix2).start();
+//            new Thread(FixDataRaceWithSynchronized::addToCounterFix3).start();
         }
     }
     private synchronized static void addToCounterFix1() {
@@ -1177,28 +1193,29 @@ public class FixDataRaceWithSynchronized {
 #### `Lock` Interface
 
 - similar to `synchronized` but `Lock` is more flexible
-- with `synchronized` thread is blocked if previous thread has lock, but with `Lock` waiting thread can perform other tasks
+- with `synchronized` thread is blocked if previous thread has lock
+- with `Lock` waiting thread can perform other tasks
 - must lock on object that implements `Lock` as opposed to synchronizing on any object
-- must free the lock once finished
+- must free lock once finished
 
 ```java
 Lock lock = new ReentrantLock();
 try {
-    lock.lock();   // blocking call
+    lock.lock();    // blocking call
     // critical section
 } finally {
-    lock.unlock(); // return lock
+    lock.unlock();  // return lock
 }
 ```
 
 ```java
 Lock lock = new ReentrantLock();
-if (lock.tryLock()) {  // non-blocking call, returns immediately
+if (lock.tryLock()) {   // non-blocking call, returns immediately
     try {
         // don’t call lock()
         // critical section
     } finally {
-        lock.unlock(); // return lock
+        lock.unlock();  // return lock
     }
 } else {
     // other tasks if not getting lock
@@ -1236,32 +1253,25 @@ capitals.put("Oslo", "Norway");
 capitals.put("Copenhagen", "Denmark");
 for (String key: capitals.keySet()) {
     capitals.remove(key);
-} // throws ConcurrentModificationException
+}   // throws ConcurrentModificationException
 ```
 
 ```java
-Map<String, String> capitals = new ConcurrentHashMap<>(); // concurrent
+Map<String, String> capitals = new ConcurrentHashMap<>();   // concurrent
 capitals.put("Oslo", "Norway");
 capitals.put("Copenhagen", "Denmark");
 for (String key: capitals.keySet()) {
     capitals.remove(key);
-} // works fine
+}   // works
 ```
 
 ```mermaid
 graph BT
-    style Collection fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style Set fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style List fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style Queue fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style SortedSet fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style NavigableSet fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style BlockingQueue fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style CopyOnWriteArraySet fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style ConcurrentSkipListSet fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style CopyOnWriteArrayList fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style ConcurrentLinkedQueue fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style LinkedBlockingQueue fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
+    style CopyOnWriteArraySet fill:green
+    style ConcurrentSkipListSet fill:green
+    style CopyOnWriteArrayList fill:green
+    style ConcurrentLinkedQueue fill:green
+    style LinkedBlockingQueue fill:green
     Set --> Collection
     List --> Collection
     Queue --> Collection
@@ -1277,12 +1287,8 @@ graph BT
 
 ```mermaid
 graph BT
-    style Map fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style SortedMap fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style NavigableMap fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style ConcurrentSkipListMap fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
-    style ConcurrentMap fill:##333, stroke:##ccc, stroke-width:2px, color:##fff
-    style ConcurrentHashMap fill:##393, stroke:##ccc, stroke-width:2px, color:##fff
+    style ConcurrentSkipListMap fill:green
+    style ConcurrentHashMap fill:green
     SortedMap --> Map
     NavigableMap --> SortedMap
     ConcurrentSkipListMap -.-> NavigableMap
@@ -1294,8 +1300,8 @@ graph BT
 #### Skip-List Collections
 
 - `ConcurrentSkipListSet` and `ConcurrentSkipListMap` are sorted by natural order
-    - `ConcurrentSkipListSet` similar to `TreeSet`
-    - `ConcurrentSkipListMap` similar to `TreeMap`
+  - `ConcurrentSkipListSet` similar to `TreeSet`
+  - `ConcurrentSkipListMap` similar to `TreeMap`
 
 #### Copy-on-Write Collections
 
@@ -1306,9 +1312,9 @@ graph BT
 #### Blocking Queues
 
 - `ConcurrentLinkedQueue` and `LinkedBlockingQueue` are both thread-safe
-    - `LinkeBlockingQueue` has extra methods for blocking (waiting for certain time)
-        - `E poll(long, TimeUnit)` retrieves and removes head of queue, waiting up to specified time
-        - `offer(E, long, TimeUnit)` inserts element into queue, waiting up to specified time
+  - `LinkedBlockingQueue` has extra methods for blocking (waiting for certain time)
+    - `E poll(long, TimeUnit)` retrieves and removes head of queue, waiting up to specified time
+    - `boolean offer(E, long, TimeUnit)` inserts element into queue, waiting up to specified time
 
 #### Synchronized Collections
 
@@ -1331,23 +1337,25 @@ capitals.put("Copenhagen", "Denmark");
 Map<String, String> syncCapitals = Collections.synchronizedMap(capitals);
 for (String key: syncCapitals.keySet()) {
     System.out.println(key + " is the capital of " + syncCapitals.get(key));
-    syncCapitals.remove(key); // throws ConcurrentModificationException
+    syncCapitals.remove(key);   // throws ConcurrentModificationException
 }
 ```
 
 ### Threading Problems
 
-- *race condition* occurs when two or more threads gain access to a shared resource at the same time
-    - this shared resource should be accessed sequentially
-    - fix with `synchronized` or `Lock`
+- *race condition* occurs when two or more threads gain access to shared resource at same time
+  - shared resource should be accessed sequentially
+  - fix with `synchronized` or `Lock`
 - *deadlock* occurs when locking threads are waiting on each other to free locks that they themselves hold
-    - fix with getting locks in the same order among all threads
+  - fix with getting locks in the same order among all threads
 - *livelock* similar to deadlock in that threads involved are stuck, making no progress
-    - but in deadlocks threads are doing nothing, in livelocks threads are busy with actions but repeatedly triggering the same conditions
-    - a risk with some algorithms that detect and recover from deadlocks; if more than one process takes action, the deadlock detection algorithm can be repeatedly triggered
-    - difficult to detect as threads are active (just stuck in an endless cycle)
-- *starvation* occurs when a thread is unable to access a required resource
-    - can happen to low-priority threads if the resource is in high demand by higher-priority threads
+  - in deadlocks threads are doing nothing, and in livelocks threads are busy with actions but repeatedly triggering
+same conditions
+  - risk with some algorithms that detect and recover from deadlocks
+  - if more than one process takes action, deadlock detection algorithm can be repeatedly triggered
+  - difficult to detect as threads are active (just stuck in cycle)
+- *starvation* occurs when thread is unable to access required resource
+  - can happen to low-priority threads if resource in high demand by higher-priority threads
 
 ## Localisation
 
